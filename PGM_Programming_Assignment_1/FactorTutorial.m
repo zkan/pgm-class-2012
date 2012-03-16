@@ -121,9 +121,15 @@ FACTORS.INPUT(2) = struct('var', [2, 1], 'card', [2, 2], 'val', [0.59, 0.41, 0.2
 FACTORS.INPUT(3) = struct('var', [3, 2], 'card', [2, 2], 'val', [0.39, 0.61, 0.06, 0.94]);
 
 % Factor Product
-% FACTORS.PRODUCT = FactorProduct(FACTORS.INPUT(1), FACTORS.INPUT(2));
+FACTORS.PRODUCT = FactorProduct(FACTORS.INPUT(1), FACTORS.INPUT(2));
+%FACTORS.PRODUCT.var
+%FACTORS.PRODUCT.card
+%FACTORS.PRODUCT.val
 % The factor defined here is correct to 4 decimal places.
-FACTORS.PRODUCT = struct('var', [1, 2], 'card', [2, 2], 'val', [0.0649, 0.1958, 0.0451, 0.6942]);
+%FACTORS.PRODUCT = struct('var', [1, 2], 'card', [2, 2], 'val', [0.0649, 0.1958, 0.0451, 0.6942]);
+%FACTORS.PRODUCT.var
+%FACTORS.PRODUCT.card
+%FACTORS.PRODUCT.val
 
 % Factor Marginalization
 % FACTORS.MARGINALIZATION = FactorMarginalization(FACTORS.INPUT(2), [2]);
