@@ -40,7 +40,8 @@ for i = 1:size(E, 1),
             %       and SetValueOfAssignment
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-            
+            assignments = IndexToAssignment(1:prod(F(j).card), F(j).card);
+            F(j) = SetValueOfAssignment(F(j), assignments(assignments(:, indx) != x, :), 0);
             
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
