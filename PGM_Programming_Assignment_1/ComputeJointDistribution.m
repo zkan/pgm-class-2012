@@ -24,8 +24,22 @@ function Joint = ComputeJointDistribution(F)
 % You may assume that you are given legal CPDs so no input checking is required.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- 
+
 Joint = struct('var', [], 'card', [], 'val', []); % Returns empty factor. Change this.
+    
+%for i = 1:numel(F),
+%    % set the variable's names
+%    Joint.var = [Joint.var i];
+%
+%    % set the cardinality
+%    indx = find(F(i).var == i);
+%    Joint.card = [Joint.card F(i).card(indx)];
+%end
+
+Joint = F(1);
+for i = 2:numel(F),
+    Joint = FactorProduct(Joint, F(i));
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
