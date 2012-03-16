@@ -132,8 +132,8 @@ FACTORS.PRODUCT = FactorProduct(FACTORS.INPUT(1), FACTORS.INPUT(2));
 %FACTORS.PRODUCT.val
 
 % Factor Marginalization
-% FACTORS.MARGINALIZATION = FactorMarginalization(FACTORS.INPUT(2), [2]);
-FACTORS.MARGINALIZATION = struct('var', [1], 'card', [2], 'val', [1 1]); 
+FACTORS.MARGINALIZATION = FactorMarginalization(FACTORS.INPUT(2), [2]);
+%FACTORS.MARGINALIZATION = struct('var', [1], 'card', [2], 'val', [1 1]);
 
 % Observe Evidence
 % FACTORS.EVIDENCE = ObserveEvidence(FACTORS.INPUT, [2 1; 3 2]);
