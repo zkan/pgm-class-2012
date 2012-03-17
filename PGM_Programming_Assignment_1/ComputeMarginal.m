@@ -29,5 +29,10 @@ end
 
 M = struct('var', [], 'card', [], 'val', []); % Returns empty factor. Change this.
 
+F = ComputeJointDistribution(ObserveEvidence(F, E));
+%for i = 1:numel(V)
+%    M = FactorMarginalization(F(V(i)), [V(i)]);
+%end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
