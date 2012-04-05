@@ -418,12 +418,12 @@ end
 
 %%% Remove -staging when you deploy!
 function url = challenge_url()
-  url = 'http://www.coursera.org/pgm/assignment/challenge';
+  url = 'http://class.coursera.org/pgm/assignment/challenge';
 end
 
 %%% Remove -staging when you deploy!
 function url = submit_url()
-  url = 'http://www.coursera.org/pgm/assignment/submit';
+  url = 'http://class.coursera.org/pgm/assignment/submit';
 end
 
 % ========================= CHALLENGE HELPERS =========================
