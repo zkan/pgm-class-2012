@@ -66,4 +66,24 @@ numAlleles = length(alleleFreqs); % Number of alleles
 % numPeople+1 - 2*numPeople: phenotype variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
+%pedigree = struct('parents', [0,0;1,3;0,0]);
+%pedigree.names = {'Ira','James','Robin'};
+%alleleFreqs = [0.1; 0.9];
+%alphaList = [0.8; 0.6; 0.1];
+
+numFactors = 2 * numPeople;
+for i = 1:numFactors
+    % consider the genotype nodes
+    if i <= numPeople
+        if pedigree.parents(i, :)
+            factorList(i).var = [i];
+        else
+            factorList(i).var = [i, pedigree.parents(i, :)]
+        end
+    % consider the phenotype nodes
+    else
+        i;
+    end
+end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
