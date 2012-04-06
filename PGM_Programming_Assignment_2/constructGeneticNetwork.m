@@ -72,17 +72,24 @@ numAlleles = length(alleleFreqs); % Number of alleles
 %alphaList = [0.8; 0.6; 0.1];
 
 numFactors = 2 * numPeople;
+
 for i = 1:numFactors
     % consider the genotype nodes
     if i <= numPeople
-        if pedigree.parents(i, :)
-            factorList(i).var = [i];
+        if pedigree.parents(i, :)(1) == 0
+            genotypeVar = i;
+            factorList(i) = genotypeGivenAlleleFreqsFactor(alleleFreqs, genotypeVar);
         else
-            factorList(i).var = [i, pedigree.parents(i, :)]
+            genotypeVarChild = i;
+            genotypeVarParentOne = pedigree.parents(i, :)(1);
+            genotypeVarParentTwo = pedigree.parents(i, :)(2);
+            factorList(i) = genotypeGivenParentsGenotypesFactor(numAlleles, genotypeVarChild, genotypeVarParentOne, genotypeVarParentTwo);
         end
     % consider the phenotype nodes
     else
-        i;
+        genotypeVar = i - numPeople;
+        phenotypeVar = i;
+        factorList(i) = phenotypeGivenGenotypeFactor(alphaList, genotypeVar, phenotypeVar);
     end
 end
 
