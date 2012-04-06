@@ -57,9 +57,37 @@ genotypeFactor = struct('var', [], 'card', [], 'val', []);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
 
 % Fill in genotypeFactor.var.  This should be a 1-D row vector.
+genotypeFactor.var = [genotypeVarChild, genotypeVarParentOne, genotypeVarParentTwo];
+
 % Fill in genotypeFactor.card.  This should be a 1-D row vector.
+numGenotypes = nchoosek(numAlleles, 2) + numAlleles;
+genotypeFactor.card = [numGenotypes, numGenotypes, numGenotypes];
 
 genotypeFactor.val = zeros(1, prod(genotypeFactor.card));
 % Replace the zeros in genotypeFactor.val with the correct values.
+numCombinations = numGenotypes^3;
+CPDs = IndexToAssignment([1:numCombinations], genotypeFactor.card);
+
+for i = 1:numCombinations
+    numMatch = 0;
+
+    % Credit: http://stackoverflow.com/questions/8492277/matlab-combinations-of-an-arbitrary-number-of-cell-arrays/8492612#8492612
+    A = genotypesToAlleles(CPDs(i, :)(2), :);
+    B = genotypesToAlleles(CPDs(i, :)(3), :);
+
+    [a, b] = ndgrid(1:numel(A), 1:numel(B));
+    C = [A(a(:))', B(b(:))'];
+    for j = 1:size(C, 1)
+        C(j, :) = sort(C(j, :));
+    end
+
+    for j = 1:size(C, 1)
+        if (genotypesToAlleles(CPDs(i, :)(1), :)(1) == C(j, :)(1)) && (genotypesToAlleles(CPDs(i, :)(1), :)(2) == C(j, :)(2))
+    numMatch = numMatch + 1;
+        end
+    end
+
+    genotypeFactor.val(i) = numMatch / size(C, 1);
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
