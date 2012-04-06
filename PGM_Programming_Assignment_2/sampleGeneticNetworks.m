@@ -22,6 +22,7 @@ phenotypeFactorAlpha = phenotypeGivenGenotypeFactor(alphaList, genotypeVar, phen
 
 % Testing genotypeGivenAlleleFreqsFactor:
 alleleFreqs = [0.1; 0.9];
+%alleleFreqs = [0.3; 0.5; 0.2];
 genotypeVar = 1;
 %genotypeFactor = struct('var', [1], 'card', [3], 'val', [0.01,0.18,0.81]); % Comment out this line for testing
 genotypeFactor = genotypeGivenAlleleFreqsFactor(alleleFreqs, genotypeVar);
