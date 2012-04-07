@@ -46,6 +46,8 @@ phenotypeFactor = struct('var', [], 'card', [], 'val', []);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
 
 % Fill in phenotypeFactor.var.  This should be a 1-D row vector.
+phenotypeFactor.var = [phenotypeVar, geneCopyVarOneList, geneCopyVarTwoList]
+
 % Fill in phenotypeFactor.card.  This should be a 1-D row vector.
 
 phenotypeFactor.val = zeros(1, prod(phenotypeFactor.card));
