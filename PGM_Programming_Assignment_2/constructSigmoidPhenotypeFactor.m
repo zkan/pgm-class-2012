@@ -46,22 +46,33 @@ phenotypeFactor = struct('var', [], 'card', [], 'val', []);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
 
 % Fill in phenotypeFactor.var.  This should be a 1-D row vector.
-phenotypeFactor.var = [phenotypeVar, geneCopyVarOneList, geneCopyVarTwoList];
+phenotypeFactor.var = [phenotypeVar, geneCopyVarOneList', geneCopyVarTwoList'];
+
+numGenesOne = numel(geneCopyVarOneList);
+numGenesTwo = numel(geneCopyVarTwoList);
 
 % Fill in phenotypeFactor.card.  This should be a 1-D row vector.
-phenotypeFactor.card = [2, 2, 2, 2, 2];
+phenotypeFactor.card = [2, numGenesOne, numGenesOne, numGenesTwo, numGenesTwo];
 
 phenotypeFactor.val = zeros(1, prod(phenotypeFactor.card));
 % Replace the zeros in phentoypeFactor.val with the correct values.
 
-for gene = 1:2
+vIdx = 1;   % index of the value in phenotypeFactor.val
+numAssignments = numGenesOne ^ 2 * numGenesTwo ^ 2;
+assignment = IndexToAssignment(1:numAssignments, [numGenesOne, numGenesOne, numGenesTwo, numGenesTwo]);
+for i = 1:numAssignments
     z = 0;
-    for allele = 1:2
-        z = alleleWeights{gene}(allele)*(1);
+    for idx = 1:numel(assignment(i, :))
+        gene = idx;
+        if idx > numGenesOne
+            gene = idx - numGenesOne;
+        end
+        allele = assignment(i, idx);
+        z = z + alleleWeights{gene}(allele);
     end
+    phenotypeFactor.val(vIdx) = computeSigmoid(z);
+    phenotypeFactor.val(vIdx + 1) = 1 - computeSigmoid(z);
+    vIdx = vIdx + 2;
 end
-
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
