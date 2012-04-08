@@ -54,4 +54,14 @@ phenotypeFactor.card = [2, 2, 2, 2, 2];
 phenotypeFactor.val = zeros(1, prod(phenotypeFactor.card));
 % Replace the zeros in phentoypeFactor.val with the correct values.
 
+for gene = 1:2
+    z = 0;
+    for allele = 1:2
+        z = alleleWeights{gene}(allele)*(1);
+    end
+end
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
