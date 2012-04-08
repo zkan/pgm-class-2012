@@ -57,6 +57,9 @@ phenotypeFactor.card = [2, numGenesOne, numGenesOne, numGenesTwo, numGenesTwo];
 phenotypeFactor.val = zeros(1, prod(phenotypeFactor.card));
 % Replace the zeros in phentoypeFactor.val with the correct values.
 
+% Credit: https://class.coursera.org/pgm/forum/thread?thread_id=732
+% Special thanks to Toshiaki Takeuchi, Michalis Frangos, and Budi Bendi.
+
 vIdx = 1;   % index of the value in phenotypeFactor.val
 numAssignments = numGenesOne ^ 2 * numGenesTwo ^ 2;
 assignment = IndexToAssignment(1:numAssignments, [numGenesOne, numGenesOne, numGenesTwo, numGenesTwo]);
