@@ -1,0 +1,55 @@
+net
+{
+	propagationenginegenerator1791944048146838126L = "edu.ucla.belief.approx.BeliefPropagationSettings@10f2f3c";
+	recoveryenginegenerator6944530267470113528l = "edu.ucla.util.SettingsImpl@1e64a3b";
+	node_size = (130 55);
+}
+
+node Traffic
+{
+	states = ("yes" "no" );
+	position = (372 -314);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable1";
+	label = "Traffic";
+	DSLxSUBMODEL = "Root Submodel";
+	diagnosistype = "AUXILIARY";
+}
+node President
+{
+	states = ("yes" "no" );
+	position = (267 -180);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable0";
+	label = "President";
+	DSLxSUBMODEL = "Root Submodel";
+	diagnosistype = "AUXILIARY";
+}
+node Accident
+{
+	states = ("yes" "no" );
+	position = (508 -175);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	ID = "variable2";
+	label = "Accident";
+	DSLxSUBMODEL = "Root Submodel";
+	diagnosistype = "AUXILIARY";
+}
+potential ( Traffic | President Accident )
+{
+	data = (((	0.9	0.1	)
+		(	0.6	0.4	))
+		((	0.5	0.5	)
+		(	0.1	0.9	)));
+}
+potential ( President | )
+{
+	data = (	0.01	0.99	);
+}
+potential ( Accident | )
+{
+	data = (	0.1	0.9	);
+}
