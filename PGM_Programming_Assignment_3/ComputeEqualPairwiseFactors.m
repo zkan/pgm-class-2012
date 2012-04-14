@@ -23,7 +23,7 @@ factors = repmat(struct('var', [], 'card', [], 'val', []), n - 1, 1);
 for i = 1:n - 1
     factors(i).var = [i, i + 1];
     factors(i).card = [K, K];
-    factors(i).val = [ones(1, K), ones(1, K)];
+    factors(i).val = [ones(K * K, 1)];
 end
 
 end
