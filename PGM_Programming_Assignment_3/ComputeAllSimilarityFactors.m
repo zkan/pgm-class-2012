@@ -24,7 +24,7 @@ factors = repmat(struct('var', [], 'card', [], 'val', []), nFactors, 1);
 idx = 1;
 for i = 1:n - 1
     for j = i + 1:n
-        if i != j
+        if i ~= j
             factors(idx) = ComputeSimilarityFactor(images, K, i, j);
             idx = idx + 1;
         end
