@@ -25,5 +25,13 @@ end
 % Your code here:
 factors = allFactors; %%% REMOVE THIS LINE
 
+v = [];
+for i = 1:length(factors)
+    v = [v; factors(i).val(1)];
+end
+
+[z, idx] = sort(v, 'descend');
+factors = factors(idx(1:F));
+
 end
 
