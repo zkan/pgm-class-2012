@@ -34,6 +34,10 @@ for i = 1:n - 2
     factors(i).card = [K, K, K];
     factors(i).val = [ones(K * K * K, 1)];
 
+    for j = 1:length(tripletList)
+        idx = AssignmentToIndex(tripletList(j).chars, factors(i).card);
+        factors(i).val(idx) = tripletList(j).factorVal;
+    end
 
 end
 
