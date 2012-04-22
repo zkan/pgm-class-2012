@@ -33,7 +33,15 @@ j = 0;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % YOUR CODE HERE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+n = size(messages, 1);
 
+for i = 1:n
+    for j = 1:n
+        if P.edges(i, j)
+            printf('i %d j %d -> %d <- %d\n', i, j, ~isempty(messages(i,j).var), ~isempty(messages(j,i).var));
 
+        end
+    end
+end
 
 return;
