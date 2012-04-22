@@ -40,6 +40,34 @@ P.edges = zeros(N);
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+P.edges = C.edges;
+used_factor_list = [];
+
+for i = 1:N
+    P.cliqueList(i).var = C.nodes{i};
+    P.cliqueList(i).card = zeros(1, length(C.nodes{i}));
+    
+    for j = 1:length(C.nodes{i})
+        for k = 1:length(C.factorList)
+            if(~isempty(find(C.factorList(k).var == C.nodes{i}(j))))
+                P.cliqueList(i).card(j) = C.factorList(k).card(find(C.factorList(k).var == C.nodes{i}(j)));
+                break;
+            end
+        end
+    end
+    P.cliqueList(i).val = ones(1, prod(P.cliqueList(i).card));
+
+    for j = 1:length(C.factorList)
+        if all(ismember(C.factorList(j).var, C.nodes{i}))
+            if !ismember(j, used_factor_list)
+%                idx = [i, j]
+%                card = P.cliqueList(i).card
+                P.cliqueList(i) = FactorProduct(P.cliqueList(i), C.factorList(j));
+                used_factor_list = [used_factor_list, j];
+            end
+        end
+    end
+end
 
 end
 
