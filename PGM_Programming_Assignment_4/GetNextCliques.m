@@ -34,14 +34,54 @@ j = 0;
 % YOUR CODE HERE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 n = size(messages, 1);
+%message_passing_matrix = zeros(n);
 
+% check upstream
 for i = 1:n
-    for j = 1:n
+    for j = i:n
         if P.edges(i, j)
-            printf('i %d j %d -> %d <- %d\n', i, j, ~isempty(messages(i,j).var), ~isempty(messages(j,i).var));
+%            printf('i %d -> j %d: %d\n', i, j, ~isempty(messages(i, j).var));
+            if isempty(messages(i, j).var)
 
+                % check if it is already received messages from its neighbors?
+%                neighbors = find(P.edges(i, :) == 1);
+%                for k = 1:length(neightbors)
+%                    if neighbors(k) ~= j
+%                        if(~isempty(message(i, j).var))                            
+%                        end
+%                    end
+%                end
+%                printf('upstream\n');
+                return;
+            end
         end
     end
 end
+
+%printf('\n');
+
+% check downstream (if we pass upstream, all messages are sent to the root already.)
+for j = n:-1:1
+    for i = 1:n
+        if P.edges(j, i)
+%            printf('j %d -> i %d: %d\n', j, i, ~isempty(messages(j, i).var));
+            if isempty(messages(j, i).var)
+%                message_passing_matrix(j, i) = 1;
+                tmp = i;
+                i = j;
+                j = tmp;
+%                printf('downstream\n');
+                return;
+            end
+        end
+    end
+end
+
+%P.edges
+%message_passing_matrix
+
+% no such cliques exist, returns i = j = 0.
+i = 0;
+j = 0;
 
 return;
