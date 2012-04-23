@@ -9,8 +9,7 @@
 %
 % Copyright (C) Daphne Koller, Stanford University, 2012
 
-function [P, MESSAGES] = CliqueTreeCalibrate(P, isMax)
-
+function P = CliqueTreeCalibrate(P, isMax)
 
 % Number of cliques in the tree.
 N = length(P.cliqueList);
@@ -52,14 +51,15 @@ while i ~= 0 && j ~= 0
             for q = 1:length(P.cliqueList)
                 if(~isempty(find(P.cliqueList(q).var == MESSAGES(i, j).var(k))))
                     MESSAGES(i, j).card(k) = P.cliqueList(q).card(find(P.cliqueList(q).var == MESSAGES(i, j).var(k)));
+                    break;
                 end
             end
         end
 
         % check if it is a leaf node
         if numel(find(P.edges(i, :) == 1)) == 1
-            v_to_summed_out = setdiff(P.cliqueList(i).var, MESSAGES(i, j).var);
-            MESSAGES(i, j) = FactorMarginalization(P.cliqueList(i), v_to_summed_out);
+            v_to_sum_out = setdiff(P.cliqueList(i).var, MESSAGES(i, j).var);
+            MESSAGES(i, j) = FactorMarginalization(P.cliqueList(i), v_to_sum_out);
         else
             % multipy all messages C_i receives except C_j
             factors_to_recv_msg = setdiff(find(P.edges(i, :) == 1), j);
@@ -74,8 +74,8 @@ while i ~= 0 && j ~= 0
             end
             MESSAGES(i, j) = FactorProduct(P.cliqueList(i), MESSAGES(i, j));
             
-            v_to_summed_out = setdiff(MESSAGES(i, j).var, P.cliqueList(j).var);
-            MESSAGES(i, j) = FactorMarginalization(MESSAGES(i, j), v_to_summed_out);
+            v_to_sum_out = setdiff(MESSAGES(i, j).var, P.cliqueList(j).var);
+            MESSAGES(i, j) = FactorMarginalization(MESSAGES(i, j), v_to_sum_out);
         end
 
         % normalize the message
