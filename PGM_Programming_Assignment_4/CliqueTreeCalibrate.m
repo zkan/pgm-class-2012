@@ -37,6 +37,30 @@ MESSAGES = repmat(struct('var', [], 'card', [], 'val', []), N, N);
 %
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+i = -1;
+j = -1;
+count = 1;
+while i ~= 0 && j ~= 0
+    [i, j] = GetNextCliques(P, MESSAGES);
+    if i ~= 0 && j ~= 0
+        MESSAGES(i, j).var = intersect(P.cliqueList(i).var, P.cliqueList(j).var);
+        MESSAGES(i, j).card = zeros(1, length(MESSAGES(i, j).var));
+
+        % find the cardinality
+        for k = 1:length(MESSAGES(i, j).var)
+            for q = 1:length(P.cliqueList)
+                if(~isempty(find(P.cliqueList(q).var == MESSAGES(i, j).var(k))))
+                    MESSAGES(i, j).card(k) = P.cliqueList(q).card(find(P.cliqueList(q).var == MESSAGES(i, j).var(k)));
+                end
+            end
+        end
+    end
+    if i == 8 && j == 9
+        break;
+    end
+end
+
+MESSAGES.var
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % YOUR CODE HERE
