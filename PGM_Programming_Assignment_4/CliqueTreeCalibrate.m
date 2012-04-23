@@ -9,7 +9,7 @@
 %
 % Copyright (C) Daphne Koller, Stanford University, 2012
 
-function P = CliqueTreeCalibrate(P, isMax)
+function [P, MESSAGES] = CliqueTreeCalibrate(P, isMax)
 
 % Number of cliques in the tree.
 N = length(P.cliqueList);
@@ -73,12 +73,8 @@ while i ~= 0 && j ~= 0
                 MESSAGES(i, j) = FactorMaxMarginalization(P.cliqueList(i), v_to_max_out);
             end
         else
-            % multipy all messages C_i receives except C_j
+            % messages C_i receives except C_j
             factors_to_recv_msg = setdiff(find(P.edges(i, :) == 1), j);
-
-%            if i == 7 && j == 8
-%                factors_to_recv_msg
-%            end
 
             if ~isMax
                 MESSAGES(i, j).val = ones(1, prod(MESSAGES(i, j).card));
@@ -90,7 +86,7 @@ while i ~= 0 && j ~= 0
                 v_to_sum_out = setdiff(MESSAGES(i, j).var, P.cliqueList(j).var);
                 MESSAGES(i, j) = FactorMarginalization(MESSAGES(i, j), v_to_sum_out);
             else
-                MESSAGES(i, j).val = -inf(1, prod(MESSAGES(i, j).card));
+                MESSAGES(i, j).val = zeros(1, prod(MESSAGES(i, j).card));
                 for v = 1:numel(factors_to_recv_msg)
                     MESSAGES(i, j) = FactorSum(MESSAGES(i, j), MESSAGES(factors_to_recv_msg(v), i));
                 end
@@ -124,7 +120,11 @@ end
 for i = 1:N
     for j = 1:N
         if P.edges(i, j) == 1
-            P.cliqueList(i) = FactorProduct(P.cliqueList(i), MESSAGES(j, i));
+            if ~isMax
+                P.cliqueList(i) = FactorProduct(P.cliqueList(i), MESSAGES(j, i));
+            else
+                P.cliqueList(i) = FactorSum(P.cliqueList(i), MESSAGES(j, i));
+            end
         end
     end
 end
