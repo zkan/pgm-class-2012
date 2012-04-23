@@ -43,6 +43,7 @@ count = 1;
 while i ~= 0 && j ~= 0
     [i, j] = GetNextCliques(P, MESSAGES);
     if i ~= 0 && j ~= 0
+
         MESSAGES(i, j).var = intersect(P.cliqueList(i).var, P.cliqueList(j).var);
         MESSAGES(i, j).card = zeros(1, length(MESSAGES(i, j).var));
 
@@ -54,13 +55,36 @@ while i ~= 0 && j ~= 0
                 end
             end
         end
+
+        % check if it is a leaf node
+        if numel(find(P.edges(i, :) == 1))
+            v_to_summed_out = setdiff(P.cliqueList(i).var, MESSAGES(i, j).var);
+            MESSAGES(i, j) = FactorMarginalization(P.cliqueList(i), v_to_summed_out);
+        else
+            % multipy all messages C_i receives except C_j
+            f_to_product = setdiff(find(P.edges(i, :) == 1), j);
+
+            MESSAGES(i, j).val = ones(1, prod(MESSAGES(i, j).card));
+            for v = 1:numel(f_to_product)
+                MESSAGES(i, j) = FactorProduct(MESSAGES(i, j), P.cliqueList(f_to_product(v)));
+            end
+            MESSAGES(i, j) = FactorProduct(MESSAGES(i, j), P.cliqueList(i));
+            
+            v_to_summed_out = setdiff(P.cliqueList(i).var, MESSAGES(i, j).var);
+            MESSAGES(i, j) = FactorMarginalization(MESSAGES(i, j), v_to_summed_out);
+        end
+
+        % normalize the message
+        MESSAGES(i, j).val = MESSAGES(i, j).val / sum(MESSAGES(i, j).val);
+
     end
-    if i == 8 && j == 9
-        break;
-    end
+
+%    if i == 7 && j == 8
+%        break;
+%    end
 end
 
-MESSAGES.var
+%MESSAGES(2, 9)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % YOUR CODE HERE
@@ -69,6 +93,12 @@ MESSAGES.var
 % Compute the final potentials for the cliques and place them in P.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+for i = 1:N
+    for j = 1:N
+        if P.edges(i, j) == 1
+            P.cliqueList(i) = FactorProduct(P.cliqueList(i), MESSAGES(j, i));
+        end
+    end
+end
 
-
-return
+return;
