@@ -9,7 +9,7 @@
 %
 % Copyright (C) Daphne Koller, Stanford University, 2012
 
-function [P, MESSAGES] = CliqueTreeCalibrate(P, isMax)
+function P = CliqueTreeCalibrate(P, isMax)
 
 % Number of cliques in the tree.
 N = length(P.cliqueList);
