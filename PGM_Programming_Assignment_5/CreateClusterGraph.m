@@ -34,7 +34,24 @@ end;
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+N = length(F);
+P.clusterList = repmat(struct('var', [], 'card', [], 'val', []), 1, N);
+P.edges = zeros(N, N);
 
+for i = 1:N
+    P.clusterList(i).var = F(i).var;
+    P.clusterList(i).card = F(i).card;
+    P.clusterList(i).val = F(i).val;
+
+    for j = 1:N
+        if i != j
+            if ismember(F(i).var, F(j).var)
+                P.edges(i, j) = 1;
+                P.edges(j, i) = 1;
+            end
+        end
+    end
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

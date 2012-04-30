@@ -28,6 +28,25 @@ function [i, j] = NaiveGetNextClusters(P, m)
     %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+    N = length(P.clusterList);
+    
+    iNumEdges = sum(sum(P.edges));
+    if m > iNumEdges
+        m = mod(m, iNumEdges);
+    end
+
+    count = 0;
+    for j = 1:N
+        for i = 1:N
+            if P.edges(i, j) == 1
+                if count == m
+                    return
+                end
+                count = count + 1;
+            end
+        end
+    end
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 end
