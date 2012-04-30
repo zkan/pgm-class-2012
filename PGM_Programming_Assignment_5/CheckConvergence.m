@@ -24,7 +24,18 @@ thresh = 1.0e-6;
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+N = size(mNew, 1);
+for i = 1:N
+    for j = 1:N
+        if i ~= j
+%            mNew(i, j).val - mOld(i, j).val
+            if sum(abs(mNew(i, j).val - mOld(i, j).val) > thresh) > 0
+                converged = false;
+                return
+            end
+        end
+    end
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
