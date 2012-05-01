@@ -38,11 +38,13 @@ function [i, j] = NaiveGetNextClusters(P, m)
     count = 0;
     for j = 1:N
         for i = 1:N
-            if P.edges(i, j) == 1
-                if count == m
-                    return
+            if i ~= j
+                if P.edges(i, j) == 1
+                    if count == m
+                        return
+                    end
+                    count = count + 1;
                 end
-                count = count + 1;
             end
         end
     end

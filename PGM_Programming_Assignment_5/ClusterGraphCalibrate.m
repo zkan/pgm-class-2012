@@ -46,11 +46,36 @@ for m = 1:length(edgeFromIndx),
     % be useful here (for making your code faster)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
+    MESSAGES(i, j).var = intersect(P.clusterList(i).var, P.clusterList(j).var);
+    MESSAGES(i, j).card = zeros(1, length(MESSAGES(i, j).var));
+
+    % find the cardinality
+    for k = 1:length(MESSAGES(i, j).var)
+        for q = 1:length(P.clusterList)
+            if(~isempty(find(P.clusterList(q).var == MESSAGES(i, j).var(k))))
+                MESSAGES(i, j).card(k) = P.clusterList(q).card(find(P.clusterList(q).var == MESSAGES(i, j).var(k)));
+                break;
+            end
+        end
+    end
+
+    % messages C_i receives except C_j
+    factors_to_recv_msg = setdiff(find(P.edges(i, :) == 1), j);
+
+    MESSAGES(i, j).val = ones(1, prod(MESSAGES(i, j).card));
+    for v = 1:numel(factors_to_recv_msg)
+        MESSAGES(i, j) = FactorProduct(MESSAGES(i, j), MESSAGES(factors_to_recv_msg(v), i));
+    end
+    MESSAGES(i, j) = FactorProduct(P.clusterList(i), MESSAGES(i, j));
+
+    v_to_sum_out = setdiff(MESSAGES(i, j).var, P.clusterList(j).var);
+    MESSAGES(i, j) = FactorMarginalization(MESSAGES(i, j), v_to_sum_out);
     
+    % normalize the message
+    MESSAGES(i, j).val = MESSAGES(i, j).val / sum(MESSAGES(i, j).val);
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end;
-
-
 
 % perform loopy belief propagation
 tic;
@@ -73,7 +98,26 @@ while (1),
     % The function 'setdiff' may be useful to help you
     % obtain some speedup in this function
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    % no cluster sends a message to itself
+    if i == j
+        continue;
+    end
     
+    % messages C_i receives except C_j
+    factors_to_recv_msg = setdiff(find(P.edges(i, :) == 1), j);
+    
+    MESSAGES(i, j).val = ones(1, prod(MESSAGES(i, j).card));
+    for v = 1:numel(factors_to_recv_msg)
+        MESSAGES(i, j) = FactorProduct(MESSAGES(i, j), MESSAGES(factors_to_recv_msg(v), i));
+    end
+    MESSAGES(i, j) = FactorProduct(P.clusterList(i), MESSAGES(i, j));
+
+    v_to_sum_out = setdiff(MESSAGES(i, j).var, P.clusterList(j).var);
+    MESSAGES(i, j) = FactorMarginalization(MESSAGES(i, j), v_to_sum_out);
+    
+    % normalize the message
+    MESSAGES(i, j).val = MESSAGES(i, j).val / sum(MESSAGES(i, j).val);
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     

@@ -47,6 +47,20 @@ function M = ComputeApproxMarginalsBP(F,E)
         % to make sure you understand its functionality.
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%        for j = 1:length(P.clusterList)
+%            if ismember(i, P.clusterList(j).var)
+%                v_to_sum_out = setdiff(P.clusterList(j).var, i);
+%                M(i) = FactorMarginalization(P.clusterList(j), v_to_sum_out);
+%                M(i).val = M(i).val / sum(M(i).val);
+%                break;
+%            end
+%        end
+
+        indx = FindPotentialWithVariable(P, i);
+        v_to_sum_out = setdiff(P.clusterList(indx).var, i);
+        M(i) = FactorMarginalization(P.clusterList(indx), v_to_sum_out);
+        M(i).val = M(i).val / sum(M(i).val);
+
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     end
 
