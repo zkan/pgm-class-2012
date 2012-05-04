@@ -23,7 +23,10 @@ p_acceptance = 0.0;
 % Since the transition is associated with the uniform 
 % distrubution, then we have Q(x -> x') equal to Q(x' -> x).
 
-p_acceptance = 1;
+logp = LogProbOfJointAssignment(F, A);
+logp_prime = LogProbOfJointAssignment(F, A_prop);
+
+p_acceptance = min(1, exp(logp_prime)/exp(logp));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
