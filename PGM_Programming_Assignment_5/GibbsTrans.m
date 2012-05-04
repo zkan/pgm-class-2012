@@ -10,6 +10,7 @@
 
 function A = GibbsTrans(A, G, F)
 
+t = [];
 for i = 1:length(G.names)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % YOUR CODE HERE
@@ -23,5 +24,11 @@ for i = 1:length(G.names)
     % be sure that the arguments you pass to it meet that criteria
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+    p = exp(BlockLogDistribution(i, G, F, A));
+    v = randsample(G.card(i), 1, true, p);
+    t = [t, v];
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
+
+A = t;

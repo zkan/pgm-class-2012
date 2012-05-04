@@ -54,6 +54,27 @@ LogBS = zeros(1, d);
 % Also you should have only ONE for-loop, as for-loops are VERY slow in matlab
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+N = length(unique([F(:).var]));
+
+logp = 0.0;
+for i = 1:N
+    if any(ismember(V, G.var2factors{i}))
+        f_intersect = intersect(V, G.var2factors{i});
+        f_diff = setdiff(G.var2factors{i}, f_intersect);
+        for j = 1:length(f_diff)
+            logp = logp + log(GetValueOfAssignment(F(f_diff(j)), A, 1:length(A)));
+        end
+    end
+end
+
+for i = 1:d
+    v = 0.0;
+    for j = 1:length(V)
+        v = v + log(F(V(j)).val(i));
+    end
+    LogBS(i) = v + logp;
+end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Re-normalize to prevent underflow when you move back to probability space

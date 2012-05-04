@@ -83,6 +83,9 @@ iteration = 0;
 
 lastMESSAGES = MESSAGES;
 
+% this variable used for Quiz #1
+iter = 0
+
 while (1),
     iteration = iteration + 1;
     [i, j] = GetNextClusters(P, MESSAGES,lastMESSAGES, iteration, useSmartMP); 
@@ -123,6 +126,14 @@ while (1),
     
     if(useSmartMP==1)
       lastMESSAGES(i,j)=prevMessage;
+    end
+
+    % these 6 lines of code are used for Quiz #1
+    if i == 19 && j == 3
+        delta = MessageDelta(MESSAGES(i, j), lastMESSAGES(i, j))
+        if delta >= 1.0e-6
+            iter = iter + 1
+        end
     end
     
     % Check for convergence every m iterations
