@@ -56,15 +56,21 @@ LogBS = zeros(1, d);
 
 N = length(unique([F(:).var]));
 
-logp = 0.0;
+f_diff = [];
 for i = 1:N
     if any(ismember(V, G.var2factors{i}))
         f_intersect = intersect(V, G.var2factors{i});
-        f_diff = setdiff(G.var2factors{i}, f_intersect);
-        for j = 1:length(f_diff)
-            logp = logp + log(GetValueOfAssignment(F(f_diff(j)), A, 1:length(A)));
-        end
+        f_diff = [f_diff, setdiff(G.var2factors{i}, f_intersect)];
+%        for j = 1:length(f_diff)
+%            logp = logp + log(GetValueOfAssignment(F(f_diff(j)), A, 1:length(A)));
+%        end
     end
+end
+
+logp = 0.0;
+unique_f = unique(f_diff)
+for i = 1:length(unique_f)
+    logp = logp + log(GetValueOfAssignment(F(unique_f(i)), A, 1:length(A)));
 end
 
 for i = 1:d
